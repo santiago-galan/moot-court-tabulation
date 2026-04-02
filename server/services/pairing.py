@@ -141,6 +141,6 @@ def _backtrack_pair(
         )
         if sub is not None:
             pet, res = _assign_sides(first, candidate, side_hist)
-            return [(pet, res)] + sub
+            return [(pet, res), *sub]
 
     return None

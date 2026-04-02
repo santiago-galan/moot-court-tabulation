@@ -1,8 +1,10 @@
+from typing import Literal
+
 from pydantic import BaseModel
 
 
 class BracketCreate(BaseModel):
-    size: int = 8
+    size: Literal[8, 16, 32] = 8
 
 
 class BracketMatchRead(BaseModel):

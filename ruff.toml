@@ -1,0 +1,25 @@
+target-version = "py311"
+line-length = 120
+
+[lint]
+select = [
+    "E",     # pycodestyle errors
+    "W",     # pycodestyle warnings
+    "F",     # pyflakes
+    "I",     # isort
+    "B",     # flake8-bugbear
+    "S",     # flake8-bandit (security)
+    "UP",    # pyupgrade
+    "SIM",   # flake8-simplify
+    "RUF",   # ruff-specific
+]
+ignore = [
+    "B008",  # Depends() in function args is standard FastAPI pattern
+    "S104",  # binding to 0.0.0.0 is intentional (LAN server)
+    "S311",  # pseudo-random is fine for side assignment coin flips
+    "S603",  # subprocess calls are intentional in launcher
+    "S607",  # partial path to executable is fine for launcher
+]
+
+[lint.per-file-ignores]
+"smoke_test.py" = ["S"]

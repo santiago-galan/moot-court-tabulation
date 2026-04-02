@@ -4,8 +4,8 @@ import qrcode
 from fastapi import APIRouter
 from fastapi.responses import StreamingResponse
 
-from server.net import get_lan_ip
 from server.config import settings
+from server.net import get_lan_ip
 
 router = APIRouter(prefix="/network", tags=["network"])
 
@@ -57,7 +57,7 @@ def stop_tunnel():
     try:
         from pyngrok import ngrok
         ngrok.kill()
-    except Exception:
+    except Exception:  # noqa: S110
         pass
     _tunnel_url = None
     return {"status": "stopped"}

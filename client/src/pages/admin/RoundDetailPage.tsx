@@ -24,7 +24,7 @@ export default function RoundDetailPage() {
       setError('')
       const r = await api.post<RoundDetail>(`/tournaments/${tid}/rounds/${rid}/generate`)
       setRound(r)
-    } catch (e: any) { setError(e.message) }
+    } catch (e) { setError(e instanceof Error ? e.message : "Unknown error") }
   }
 
   const setStatus = async (status: string) => {

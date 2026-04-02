@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session, joinedload
 from server.database import get_db
 from server.models.pairing import JudgeAssignment, Pairing
 from server.models.round import Round
-from server.models.team import Oralist, Team
+from server.models.team import Team
 from server.models.tournament import Tournament
 
 router = APIRouter(prefix="/judge", tags=["judge_portal"])

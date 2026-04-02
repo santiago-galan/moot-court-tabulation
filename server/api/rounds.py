@@ -1,5 +1,6 @@
 import secrets
 import string
+from typing import Literal
 
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session, joinedload
@@ -53,7 +54,7 @@ def list_rounds(tournament_id: int, db: Session = Depends(get_db)):
 
 @router.post("/", response_model=RoundDetail)
 def create_round(tournament_id: int, payload: RoundCreate, db: Session = Depends(get_db)):
-    tournament = _get_tournament(tournament_id, db)
+    _get_tournament(tournament_id, db)
     existing = db.query(Round).filter(Round.tournament_id == tournament_id).count()
     rnd = Round(
         tournament_id=tournament_id,
@@ -180,13 +181,16 @@ def add_manual_pairing(tournament_id: int, round_id: int, payload: PairingCreate
 
 
 @router.patch("/{round_id}/status")
-def update_round_status(tournament_id: int, round_id: int, status: str, db: Session = Depends(get_db)):
+def update_round_status(
+    tournament_id: int,
+    round_id: int,
+    status: Literal["pending", "in_progress", "completed"],
+    db: Session = Depends(get_db),
+):
     _get_tournament(tournament_id, db)
     rnd = db.get(Round, round_id)
     if not rnd or rnd.tournament_id != tournament_id:
         raise HTTPException(404, "Round not found")
-    if status not in ("pending", "in_progress", "completed"):
-        raise HTTPException(400, "Invalid status")
     rnd.status = status
     db.commit()
     return {"status": rnd.status}

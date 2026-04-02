@@ -1,5 +1,4 @@
 from contextlib import asynccontextmanager
-from pathlib import Path
 
 from fastapi import FastAPI, Request, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
@@ -7,7 +6,7 @@ from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
-from server.config import settings, BASE_DIR
+from server.config import BASE_DIR, settings
 from server.database import Base, engine
 from server.net import get_lan_ip
 from server.ws.manager import manager
@@ -61,7 +60,17 @@ async def websocket_endpoint(ws: WebSocket):
         manager.disconnect(ws)
 
 
-from server.api import rulesets, tournaments, teams, rounds, scoring, brackets, reports, judge_portal, network  # noqa: E402
+from server.api import (  # noqa: E402
+    brackets,
+    judge_portal,
+    network,
+    reports,
+    rounds,
+    rulesets,
+    scoring,
+    teams,
+    tournaments,
+)
 
 app.include_router(rulesets.router, prefix="/api")
 app.include_router(tournaments.router, prefix="/api")

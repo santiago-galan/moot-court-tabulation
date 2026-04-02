@@ -1,8 +1,13 @@
-from pydantic import BaseModel
+from typing import Literal
+
+from pydantic import BaseModel, Field
+
+ROUND_TYPES = Literal["preliminary", "elimination"]
+ROUND_STATUSES = Literal["pending", "in_progress", "completed"]
 
 
 class JudgeAssignmentCreate(BaseModel):
-    judge_name: str
+    judge_name: str = Field(max_length=200, default="")
 
 
 class JudgeAssignmentRead(BaseModel):
@@ -15,9 +20,9 @@ class JudgeAssignmentRead(BaseModel):
 
 
 class PairingCreate(BaseModel):
-    petitioner_team_id: int
-    respondent_team_id: int
-    room: str = ""
+    petitioner_team_id: int = Field(gt=0)
+    respondent_team_id: int = Field(gt=0)
+    room: str = Field(default="", max_length=100)
     judges: list[JudgeAssignmentCreate] = []
 
 
@@ -41,8 +46,8 @@ class PairingDetail(PairingRead):
 
 
 class RoundCreate(BaseModel):
-    round_type: str = "preliminary"
-    elim_level: str | None = None
+    round_type: ROUND_TYPES = "preliminary"
+    elim_level: str | None = Field(default=None, max_length=20)
 
 
 class RoundRead(BaseModel):

@@ -1,16 +1,16 @@
 from datetime import datetime
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class OralistScoreEntry(BaseModel):
-    oralist_id: int
-    criterion_name: str
-    score: float
+    oralist_id: int = Field(gt=0)
+    criterion_name: str = Field(min_length=1, max_length=200)
+    score: float = Field(ge=0, le=1000)
 
 
 class BallotSubmission(BaseModel):
-    winner_team_id: int | None = None
+    winner_team_id: int | None = Field(default=None, gt=0)
     scores: list[OralistScoreEntry] = []
 
 

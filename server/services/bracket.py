@@ -1,4 +1,3 @@
-import math
 import secrets
 import string
 
@@ -6,7 +5,6 @@ from sqlalchemy.orm import Session, joinedload
 
 from server.models.pairing import JudgeAssignment, Pairing
 from server.models.round import Round
-from server.models.team import Team
 from server.models.tournament import Tournament
 from server.schemas.bracket import BracketMatchRead
 from server.services.tabulation import compute_standings
@@ -34,7 +32,6 @@ def generate_bracket(tournament_id: int, size: int, db: Session) -> list[Bracket
     tournament = db.get(Tournament, tournament_id)
     existing_rounds = db.query(Round).filter(Round.tournament_id == tournament_id).count()
 
-    num_elim_rounds = int(math.log2(size))
     matchups: list[tuple[int, int]] = []
     for i in range(size // 2):
         matchups.append((seeded[i].team_id, seeded[size - 1 - i].team_id))

@@ -18,7 +18,7 @@ export default function BracketPage() {
       setError('')
       const m = await api.post<BracketMatch[]>(`/tournaments/${id}/bracket`, { size })
       setMatches(m)
-    } catch (e: any) { setError(e.message) }
+    } catch (e) { setError(e instanceof Error ? e.message : "Unknown error") }
   }
 
   const grouped = matches.reduce<Record<string, BracketMatch[]>>((acc, m) => {

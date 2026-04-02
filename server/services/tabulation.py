@@ -2,11 +2,11 @@ from collections import defaultdict
 
 from sqlalchemy.orm import Session, joinedload
 
-from server.models.ballot import Ballot, OralistScore
+from server.models.ballot import Ballot
 from server.models.pairing import JudgeAssignment, Pairing
 from server.models.round import Round
 from server.models.ruleset import Ruleset
-from server.models.team import Oralist, Team
+from server.models.team import Team
 from server.models.tournament import Tournament
 from server.schemas.scoring import TeamStanding
 
@@ -62,8 +62,6 @@ def compute_standings(tournament_id: int, db: Session) -> list[TeamStanding]:
 
     ruleset = tournament.ruleset
     teams = db.query(Team).filter(Team.tournament_id == tournament_id).all()
-    team_map = {t.id: t for t in teams}
-
     pairings = (
         db.query(Pairing)
         .join(Round)

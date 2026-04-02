@@ -17,7 +17,7 @@ def create_bracket(tournament_id: int, payload: BracketCreate, db: Session = Dep
     try:
         matches = generate_bracket(tournament_id, payload.size, db)
     except ValueError as e:
-        raise HTTPException(400, str(e))
+        raise HTTPException(400, str(e)) from None
     t.status = "elims"
     db.commit()
     return matches

@@ -42,7 +42,7 @@ export default function JudgeEntry() {
         scores: entries,
       })
       setSubmitted(true)
-    } catch (e: any) { setError(e.message) }
+    } catch (e) { setError(e instanceof Error ? e.message : "Unknown error") }
   }
 
   if (!data) {

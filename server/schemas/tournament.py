@@ -1,20 +1,23 @@
 from datetime import date
+from typing import Literal
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from server.schemas.ruleset import RulesetRead
 
+TOURNAMENT_STATUSES = Literal["setup", "prelims", "elims", "completed"]
+
 
 class TournamentCreate(BaseModel):
-    name: str
+    name: str = Field(min_length=1, max_length=300)
     event_date: date | None = None
-    ruleset_id: int
+    ruleset_id: int = Field(gt=0)
 
 
 class TournamentUpdate(BaseModel):
-    name: str | None = None
+    name: str | None = Field(default=None, min_length=1, max_length=300)
     event_date: date | None = None
-    status: str | None = None
+    status: TOURNAMENT_STATUSES | None = None
 
 
 class TournamentRead(BaseModel):
